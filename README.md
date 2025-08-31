@@ -2,15 +2,6 @@
 
 <a id="readme-top"></a>
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![Release][release-shield]][release-url]
-[![Last Commit][last-commit-shield]][last-commit-url]
-[![MIT License][license-shield]][license-url]
-[![Discord][discord-shield]][discord-url]
-
 <br></br>
 
 <div align="center">
@@ -28,6 +19,19 @@
       <a href="https://github.com/aditsuru-git/llm-agent-v2/issues/new?labels=enhancement&template=feature-request.md">Request Feature</a>
     </p>
   </p>
+</div>
+
+<div align="center">
+
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![Release][release-shield]][release-url]
+[![Last Commit][last-commit-shield]][last-commit-url]
+[![MIT License][license-shield]][license-url]
+[![Discord][discord-shield]][discord-url]
+
 </div>
 
 > [!CAUTION]
