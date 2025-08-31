@@ -1,5 +1,3 @@
-# src/config.py
-
 # --- UI Color Configuration ---
 # Customize the look and feel of the CLI.
 # You can use standard color names (e.g., "red", "cyan") or hexcodes (e.g., "#FF5733").

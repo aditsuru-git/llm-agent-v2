@@ -8,42 +8,33 @@ import json
 from src.db.persistence import load_state_from_mongodb, save_state_to_mongodb
 from src.persona import persona_text
 from src.state import AgentState
-from src.tools import (
-    shell_command_executor_raw,
-    read_image,
-    read_audio,
-    read_video,
-    fetch_url,
-    current_time,
-    calculate,
-)
+from src.tools import all_tools
 from dotenv import load_dotenv
 
 load_dotenv()
 
-tools = [
-    shell_command_executor_raw,
-    read_image,
-    read_audio,
-    read_video,
-    fetch_url,
-    current_time,
-    calculate,
-]
 
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash").bind_tools(
-    tools
-)  # Using 1.5-flash as it's generally better
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash").bind_tools(all_tools)
 
 
 def convert_tool_message_if_multimodal(message: ToolMessage) -> ToolMessage:
-    """Convert ToolMessage content if it contains multimodal data."""
+    """
+    Inspects ToolMessage content and only processes it if it's structured JSON
+    from a multimodal tool. Otherwise, it passes it through unchanged.
+    """
+
+    if not isinstance(message.content, str):
+        return message
+
+    content_str = message.content.strip()
+    if not content_str.startswith(("{", "[")):
+        return message
+
     try:
-        if isinstance(message.content, str):
-            content_data = json.loads(message.content)
-        elif isinstance(message.content, dict):
-            content_data = message.content
-        else:
+        content_data = json.loads(content_str)
+
+        # Ensure it's a dictionary before trying to access keys
+        if not isinstance(content_data, dict):
             return message
 
         if content_data.get("type") == "multimodal":
@@ -57,7 +48,7 @@ def convert_tool_message_if_multimodal(message: ToolMessage) -> ToolMessage:
         else:
             return message
 
-    except (json.JSONDecodeError, TypeError, KeyError):
+    except json.JSONDecodeError:
         return message
 
 
@@ -170,7 +161,7 @@ def should_continue(state: AgentState):
 # This is the most important part of the file. It creates the `app` that cli.py uses.
 graph = StateGraph(AgentState)
 graph.add_node("llm_call", llm_call)
-tool_node = ToolNode(tools=tools)
+tool_node = ToolNode(tools=all_tools)
 graph.add_node("tools", tool_node)
 graph.set_entry_point("llm_call")
 graph.add_conditional_edges(

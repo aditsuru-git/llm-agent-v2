@@ -1,4 +1,3 @@
-from pathlib import Path
 from langchain_core.tools import tool
 from src.utils.cloudinary import upload_file_to_cloudinary
 
